@@ -95,14 +95,25 @@ static void uart_evt_test()
     uart_param_config(uart_num, &uart_config);
     esp_log_level_set(TAG, ESP_LOG_INFO);
     uart_driver_install(uart_num, BUF_SIZE * 2, BUF_SIZE * 2, 10, &uart0_queue, 0);
-    uart_enable_pattern_det_intr(uart_num, '+', 3, 10000, 10, 10);
-    xTaskCreate(uart_task, "uart_task", 2048, (void*)uart_num, 12, NULL);
+    // uart_enable_pattern_det_intr(uart_num, '+', 3, 10000, 10, 10);
+    xTaskCreate(uart_task, "uart_task", 2048, (void*)uart_num, 12, NULL); // a separate task that captures the UART events
     uint8_t* data = (uint8_t*) malloc(BUF_SIZE);
     do {
         int len = uart_read_bytes(uart_num, data, BUF_SIZE, 100 / portTICK_RATE_MS);
         if (len > 0) {
-            ESP_LOGI(TAG, "uart read: %d", len); // Parse instructions here
-            uart_write_bytes(uart_num, (const char*)data, len);
+            if (data[0] == 'w') {
+                printf("forward\n");
+            } else if (data[0] == 's') {
+                printf("backward\n");
+            } else if (data[0] == 'a') {
+                printf("left\n");
+            } else if (data[0] == 'd') {
+                printf("right\n");
+            } else if (data[0] == ' ') {
+                printf("stop\n"); 
+            }
+            // ESP_LOGI(TAG, "uart read: %d", len); // Parse instructions here
+            // uart_write_bytes(uart_num, (const char*)ata, len);
         } 
     } while (1);
 }

@@ -1,140 +1,129 @@
-/* Mesh Internal Communication Example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
+/* UART-MESH test
+    a test that use mesh to control another robot
+ */
+#include <stdio.h>
+// #include "mesh_motor.h"
+#include "esp_err.h"
+#include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "driver/gpio.h"
+#define pin_R 4
+#define pin_G 0
+#define pin_Y 2
+/*******************************************************
+ *                MESH SETUP
+ *******************************************************/
 #include <string.h>
 #include "esp_wifi.h"
 #include "esp_system.h"
 #include "esp_event_loop.h"
-#include "esp_log.h"
 #include "esp_mesh.h"
-#include "esp_mesh_internal.h"
-#include "mesh_light.h"
+#include "mesh_msg.h"
 #include "nvs_flash.h"
 
-/*******************************************************
- *                Macros
- *******************************************************/
-//#define MESH_P2P_TOS_OFF
-
-/*******************************************************
- *                Constants
- *******************************************************/
-#define RX_SIZE          (1500)
-#define TX_SIZE          (1460)
-
-/*******************************************************
- *                Variable Definitions
- *******************************************************/
-static const char *MESH_TAG = "mesh_main";
-static const uint8_t MESH_ID[6] = { 0x77, 0x77, 0x77, 0x77, 0x77, 0x77};
-static uint8_t tx_buf[TX_SIZE] = { 0, };
-static uint8_t rx_buf[RX_SIZE] = { 0, };
+#define RX_SIZE     (1500)
+#define TX_SIZE     (1460)
+static const char *MESH_TAG = "mesh_robot";
+static const uint8_t MESH_ID[6] = {0x77, 0x77, 0x77,0x77, 0x77, 0x77,};
+static uint8_t tx_buf[TX_SIZE] = { 0,};
+static uint8_t rx_buf[RX_SIZE] = { 0,};
 static bool is_running = true;
 static bool is_mesh_connected = false;
 static mesh_addr_t mesh_parent_addr;
 static int mesh_layer = -1;
 
-mesh_light_ctl_t light_on = {
-    .cmd = MESH_CONTROL_CMD,
-    .on = 1,
-    .token_id = MESH_TOKEN_ID,
-    .token_value = MESH_TOKEN_VALUE,
+static const char* TAG = "LED";
+
+mesh_led_t Y_on = {
+    .cmd = LED_CMD,
+    .state = 1,
+    .R = 0,
+    .G = 0,
+    .Y = 1,
 };
 
-mesh_light_ctl_t light_off = {
-    .cmd = MESH_CONTROL_CMD,
-    .on = 0,
-    .token_id = MESH_TOKEN_ID,
-    .token_value = MESH_TOKEN_VALUE,
+mesh_led_t Y_off = {
+    .cmd = LED_CMD,
+    .state = 0,
+    .R = 0,
+    .G = 0,
+    .Y = 1.
 };
 
-/*******************************************************
- *                Function Declarations
- *******************************************************/
+mesh_led_t R_on = {
+    .cmd = LED_CMD,
+    .state = 1,
+    .R = 1,
+    .G = 0,
+    .Y = 0.
+};
+
+mesh_led_t R_off = {
+    .cmd = LED_CMD,
+    .state = 0,
+    .R = 1,
+    .G = 0,
+    .Y = 0.
+};
+
+mesh_led_t G_on = {
+    .cmd = LED_CMD,
+    .state = 1,
+    .R = 0,
+    .G = 1,
+    .Y = 0.
+};
+
+mesh_led_t G_off = {
+    .cmd = LED_CMD,
+    .state = 0,
+    .R = 0,
+    .G = 1,
+    .Y = 0.
+};
+
+/*
+    Use mesh to control with other robots. give instructions for others to move
+ */
 
 /*******************************************************
- *                Function Definitions
+ *                INIT FUNCTIONS
  *******************************************************/
-void esp_mesh_p2p_tx_main(void *arg)
+
+static esp_err_t led_init()
+{
+    gpio_pad_select_gpio(pin_Y);
+    gpio_pad_select_gpio(pin_R);
+    gpio_pad_select_gpio(pin_G);
+    gpio_set_direction(pin_R, GPIO_MODE_OUTPUT);
+    gpio_set_direction(pin_G, GPIO_MODE_OUTPUT);
+    gpio_set_direction(pin_Y, GPIO_MODE_OUTPUT);
+    return ESP_OK;
+}
+
+static void mesh_rx()
 {
     int i;
     esp_err_t err;
-    int send_count = 0;
     mesh_addr_t route_table[CONFIG_MESH_ROUTE_TABLE_SIZE];
     int route_table_size = 0;
-    mesh_data_t data;
+    mesh_data_t data;;
     data.data = tx_buf;
     data.size = sizeof(tx_buf);
     data.proto = MESH_PROTO_BIN;
 #ifdef MESH_P2P_TOS_OFF
     data.tos = MESH_TOS_DEF;
 #endif /* MESH_P2P_TOS_OFF */
-
-    is_running = true;
     while (is_running) {
-        /* non-root do nothing but print */
-        // sleep
-        if (!esp_mesh_is_root()) {
-            ESP_LOGI(MESH_TAG, "layer:%d, rtableSize:%d, %s", mesh_layer,
-                     esp_mesh_get_routing_table_size(),
-                     (is_mesh_connected && esp_mesh_is_root()) ? "ROOT" : is_mesh_connected ? "NODE" : "DISCONNECT");
-            vTaskDelay(10 * 1000 / portTICK_RATE_MS);
-            continue;
-        }
-        esp_mesh_get_routing_table((mesh_addr_t *) &route_table,
-                                   CONFIG_MESH_ROUTE_TABLE_SIZE * 6, &route_table_size);
-        if (send_count && !(send_count % 100)) {
-            ESP_LOGI(MESH_TAG, "size:%d/%d,send_count:%d", route_table_size,
-                     esp_mesh_get_routing_table_size(), send_count);
-        }
-        send_count++;
-        tx_buf[25] = (send_count >> 24) & 0xff;
-        tx_buf[24] = (send_count >> 16) & 0xff;
-        tx_buf[23] = (send_count >> 8) & 0xff;
-        tx_buf[22] = (send_count >> 0) & 0xff;
-        if (send_count % 2) {
-            memcpy(tx_buf, (uint8_t *)&light_on, sizeof(light_on));
-        } else {
-            memcpy(tx_buf, (uint8_t *)&light_off, sizeof(light_off));
-        }
-
-        for (i = 0; i < route_table_size; i++) {
-            err = esp_mesh_send(&route_table[i], &data, MESH_DATA_P2P, NULL, 0);
-            if (err) {
-                ESP_LOGE(MESH_TAG,
-                         "[ROOT-2-UNICAST:%d][L:%d]parent:"MACSTR" to "MACSTR", heap:%d[err:0x%x, proto:%d, tos:%d]",
-                         send_count, mesh_layer, MAC2STR(mesh_parent_addr.addr),
-                         MAC2STR(route_table[i].addr), esp_get_free_heap_size(),
-                         err, data.proto, data.tos);
-            } else if (!(send_count % 100)) {
-                ESP_LOGW(MESH_TAG,
-                         "[ROOT-2-UNICAST:%d][L:%d][rtableSize:%d]parent:"MACSTR" to "MACSTR", heap:%d[err:0x%x, proto:%d, tos:%d]",
-                         send_count, mesh_layer,
-                         esp_mesh_get_routing_table_size(),
-                         MAC2STR(mesh_parent_addr.addr),
-                         MAC2STR(route_table[i].addr), esp_get_free_heap_size(),
-                         err, data.proto, data.tos);
-            }
-        }
-        /* if route_table_size is less than 10, add delay to avoid watchdog in this task. */
-        if (route_table_size < 10) {
-            vTaskDelay(1 * 1000 / portTICK_RATE_MS);
-        }
+        esp_mesh_get_routing_table((mesh_addr_t *) &route_table, CONFIG_MESH_ROUTE_TABLE_SIZE * 6, &route_table_size);
     }
-    vTaskDelete(NULL);
 }
 
-void esp_mesh_p2p_rx_main(void *arg)
+static void mesh_tx(void *arg)
 {
-    int recv_count = 0;
     esp_err_t err;
     mesh_addr_t from;
-    int send_count = 0;
     mesh_data_t data;
     int flag = 0;
     data.data = rx_buf;
@@ -143,40 +132,14 @@ void esp_mesh_p2p_rx_main(void *arg)
     is_running = true;
     while (is_running) {
         data.size = RX_SIZE;
-        err = esp_mesh_recv(&from, &data, portMAX_DELAY, &flag, NULL, 0);
+        err = esp_mesh_recv(&from, &data, protMAX_DELAY, &flag, NULL, 0);
         if (err != ESP_OK || !data.size) {
             ESP_LOGE(MESH_TAG, "err:0x%x, size:%d", err, data.size);
             continue;
         }
-        /* extract send count */
-        if (data.size >= sizeof(send_count)) {
-            send_count = (data.data[25] << 24) | (data.data[24] << 16)
-                         | (data.data[23] << 8) | data.data[22];
-        }
-        recv_count++;
-        /* process light control */
-        mesh_light_process(&from, data.data, data.size);
-        if (!(recv_count % 1)) {
-            ESP_LOGW(MESH_TAG,
-                     "[#RX:%d/%d][L:%d] parent:"MACSTR", receive from "MACSTR", size:%d, heap:%d, flag:%d[err:0x%x, proto:%d, tos:%d]",
-                     recv_count, send_count, mesh_layer,
-                     MAC2STR(mesh_parent_addr.addr), MAC2STR(from.addr),
-                     data.size, esp_get_free_heap_size(), flag, err, data.proto,
-                     data.tos);
-        }
+        mesh_motor_move(&from, data.data, data.size);
+        vTaskDelete(NULL);
     }
-    vTaskDelete(NULL);
-}
-
-esp_err_t esp_mesh_comm_p2p_start(void)
-{
-    static bool is_comm_p2p_started = false;
-    if (!is_comm_p2p_started) {
-        is_comm_p2p_started = true;
-        xTaskCreate(esp_mesh_p2p_tx_main, "MPTX", 3072, NULL, 5, NULL);
-        xTaskCreate(esp_mesh_p2p_rx_main, "MPRX", 3072, NULL, 5, NULL);
-    }
-    return ESP_OK;
 }
 
 void mesh_event_handler(mesh_event_t event)
@@ -336,33 +299,20 @@ void mesh_event_handler(mesh_event_t event)
     }
 }
 
-void app_main(void)
+static void mesh_init()
 {
-    ESP_ERROR_CHECK(mesh_light_init());
+    // init and stop TCPIP (use DHCP)
     ESP_ERROR_CHECK(nvs_flash_init());
-    /*  tcpip initialization */
     tcpip_adapter_init();
-    /* for mesh
-     * stop DHCP server on softAP interface by default
-     * stop DHCP client on station interface by default
-     * */
     ESP_ERROR_CHECK(tcpip_adapter_dhcps_stop(TCPIP_ADAPTER_IF_AP));
     ESP_ERROR_CHECK(tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA));
-#if 0
-    /* static ip settings */
-    tcpip_adapter_ip_info_t sta_ip;
-    sta_ip.ip.addr = ipaddr_addr("192.168.1.102");
-    sta_ip.gw.addr = ipaddr_addr("192.168.1.1");
-    sta_ip.netmask.addr = ipaddr_addr("255.255.255.0");
-    tcpip_adapter_set_ip_info(WIFI_IF_STA, &sta_ip);
-#endif
-    /*  wifi initialization */
+    // wifi initialization
     ESP_ERROR_CHECK(esp_event_loop_init(NULL, NULL));
-    wifi_init_config_t config = WIFI_INIT_CONFIG_DEFAULT();
+    wifi_init_config_t config= WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&config));
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_FLASH));
     ESP_ERROR_CHECK(esp_wifi_start());
-    /*  mesh initialization */
+    // mesh initialization
     ESP_ERROR_CHECK(esp_mesh_init());
     ESP_ERROR_CHECK(esp_mesh_set_max_layer(CONFIG_MESH_MAX_LAYER));
     ESP_ERROR_CHECK(esp_mesh_set_vote_percentage(1));
@@ -371,24 +321,28 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_mesh_fix_root(1));
 #endif
     mesh_cfg_t cfg = MESH_INIT_CONFIG_DEFAULT();
-    /* mesh ID */
     memcpy((uint8_t *) &cfg.mesh_id, MESH_ID, 6);
-    /* mesh event callback */
     cfg.event_cb = &mesh_event_handler;
-    /* router */
     cfg.channel = CONFIG_MESH_CHANNEL;
     cfg.router.ssid_len = strlen(CONFIG_MESH_ROUTER_SSID);
     memcpy((uint8_t *) &cfg.router.ssid, CONFIG_MESH_ROUTER_SSID, cfg.router.ssid_len);
-    memcpy((uint8_t *) &cfg.router.password, CONFIG_MESH_ROUTER_PASSWD,
-           strlen(CONFIG_MESH_ROUTER_PASSWD));
-    /* mesh softAP */
-    ESP_ERROR_CHECK(esp_mesh_set_ap_authmode(CONFIG_MESH_AP_AUTHMODE));
+    memcpy((uint8_t*) &cfg.router.password, CONFIG_MESH_ROUTER_PASSWD, strlen(CONFIG_MESH_ROUTER_PASSWD));
+    ESP_ERROR_CHECK(esp_mesh_set_authmode(CONFIG_MESH_AP_AUTHMODE));
     cfg.mesh_ap.max_connection = CONFIG_MESH_AP_CONNECTIONS;
-    memcpy((uint8_t *) &cfg.mesh_ap.password, CONFIG_MESH_AP_PASSWD,
-           strlen(CONFIG_MESH_AP_PASSWD));
+    memcpy((uint8_t *) &cfg.mesh_ap.password, CONFIG_MESH_AP_PASSWD, strlen(CONFIG_MESH_AP_PASSWD));
     ESP_ERROR_CHECK(esp_mesh_set_config(&cfg));
-    /* mesh start */
     ESP_ERROR_CHECK(esp_mesh_start());
-    ESP_LOGI(MESH_TAG, "mesh starts successfully, heap:%d, %s\n",  esp_get_free_heap_size(),
-             esp_mesh_is_root_fixed() ? "root fixed" : "root not fixed");
+    ESP_LOGI(MESH_TAG, "mesh starts successfully.\n");
+    xTaskCreate(&mesh_led_ctl_task,"mesh_led_respond", 2048, NULL, 5, NULL );
+}
+
+static void mesh_led_ctl_task(void *pvParameters)
+{
+    
+}
+
+void mesh_start(void){
+    ESP_ERROR_CHECK(led_init());
+    ESP_ERROR_CHECK(nvs_flash_init());
+    mesh_init();
 }
