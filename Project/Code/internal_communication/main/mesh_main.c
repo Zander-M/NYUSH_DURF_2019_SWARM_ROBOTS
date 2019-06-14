@@ -163,7 +163,7 @@ void esp_mesh_p2p_rx_main(void *arg)
                      MAC2STR(mesh_parent_addr.addr), MAC2STR(from.addr),
                      data.size, esp_get_free_heap_size(), flag, err, data.proto,
                      data.tos);
-        }
+        } // ???
     }
     vTaskDelete(NULL);
 }

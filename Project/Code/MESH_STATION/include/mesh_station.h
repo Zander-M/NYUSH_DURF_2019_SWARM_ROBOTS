@@ -1,7 +1,6 @@
 #ifndef _MESH_STATION_H_
 #define _MESH_STATION_H_
 
-void mesh_event_handler(mesh_event_t event);
-void mesh_start(void);
+esp_err_t esp_mesh_comm_p2p_start();
 
 #endif 
