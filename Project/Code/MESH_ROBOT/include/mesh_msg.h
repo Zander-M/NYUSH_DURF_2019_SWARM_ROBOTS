@@ -2,8 +2,6 @@
 #define _MESH_MSG_H_
 
 // buffer define size
-#define RX_SIZE (1500)
-#define TX_SIZE (1460)
 
 // cmd define
 #define IDLE_CMD  (0x0)
@@ -40,5 +38,6 @@ typedef struct{
 
 typedef struct{
     uint8_t rspd;
-};
+} msg_t ;
+
 #endif

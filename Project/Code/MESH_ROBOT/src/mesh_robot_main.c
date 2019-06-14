@@ -19,11 +19,12 @@
 #include "esp_system.h"
 #include "esp_event_loop.h"
 #include "esp_mesh.h"
+#include "esp_mesh_internal.h"
 #include "mesh_msg.h"
 #include "nvs_flash.h"
 
-#define RX_SIZE     (1500)
-#define TX_SIZE     (1460)
+#define RX_SIZE     (256)
+#define TX_SIZE     (256)
 static const char *MESH_TAG = "mesh_robot";
 static const uint8_t MESH_ID[6] = {0x77, 0x77, 0x77,0x77, 0x77, 0x77,};
 static uint8_t tx_buf[TX_SIZE] = { 0,};
@@ -33,7 +34,7 @@ static bool is_mesh_connected = false;
 static mesh_addr_t mesh_parent_addr;
 static int mesh_layer = -1;
 
-static const char* TAG = "LED";
+// static const char* TAG = "LED";
 
 mesh_led_t Y_on = {
     .cmd = LED_CMD,
@@ -87,59 +88,15 @@ mesh_led_t G_off = {
     Use mesh to control with other robots. give instructions for others to move
  */
 
+static void mesh_recv_task();
+
 /*******************************************************
- *                INIT FUNCTIONS
+ *                Handler
  *******************************************************/
 
-static esp_err_t led_init()
+void esp_mesh_comm_p2p_start()
 {
-    gpio_pad_select_gpio(pin_Y);
-    gpio_pad_select_gpio(pin_R);
-    gpio_pad_select_gpio(pin_G);
-    gpio_set_direction(pin_R, GPIO_MODE_OUTPUT);
-    gpio_set_direction(pin_G, GPIO_MODE_OUTPUT);
-    gpio_set_direction(pin_Y, GPIO_MODE_OUTPUT);
-    return ESP_OK;
-}
-
-static void mesh_rx()
-{
-    int i;
-    esp_err_t err;
-    mesh_addr_t route_table[CONFIG_MESH_ROUTE_TABLE_SIZE];
-    int route_table_size = 0;
-    mesh_data_t data;;
-    data.data = tx_buf;
-    data.size = sizeof(tx_buf);
-    data.proto = MESH_PROTO_BIN;
-#ifdef MESH_P2P_TOS_OFF
-    data.tos = MESH_TOS_DEF;
-#endif /* MESH_P2P_TOS_OFF */
-    while (is_running) {
-        esp_mesh_get_routing_table((mesh_addr_t *) &route_table, CONFIG_MESH_ROUTE_TABLE_SIZE * 6, &route_table_size);
-    }
-}
-
-static void mesh_tx(void *arg)
-{
-    esp_err_t err;
-    mesh_addr_t from;
-    mesh_data_t data;
-    int flag = 0;
-    data.data = rx_buf;
-    data.size = RX_SIZE;
-
-    is_running = true;
-    while (is_running) {
-        data.size = RX_SIZE;
-        err = esp_mesh_recv(&from, &data, protMAX_DELAY, &flag, NULL, 0);
-        if (err != ESP_OK || !data.size) {
-            ESP_LOGE(MESH_TAG, "err:0x%x, size:%d", err, data.size);
-            continue;
-        }
-        mesh_motor_move(&from, data.data, data.size);
-        vTaskDelete(NULL);
-    }
+    xTaskCreate(&mesh_recv_task, "mesh receive task", 3072, NULL, 5, NULL);
 }
 
 void mesh_event_handler(mesh_event_t event)
@@ -195,7 +152,6 @@ void mesh_event_handler(mesh_event_t event)
                  esp_mesh_is_root() ? "<ROOT>" :
                  (mesh_layer == 2) ? "<layer2>" : "", MAC2STR(id.addr));
         last_layer = mesh_layer;
-        mesh_connected_indicator(mesh_layer);
         is_mesh_connected = true;
         if (esp_mesh_is_root()) {
             tcpip_adapter_dhcpc_start(TCPIP_ADAPTER_IF_STA);
@@ -207,7 +163,6 @@ void mesh_event_handler(mesh_event_t event)
                  "<MESH_EVENT_PARENT_DISCONNECTED>reason:%d",
                  event.info.disconnected.reason);
         is_mesh_connected = false;
-        mesh_disconnected_indicator();
         mesh_layer = esp_mesh_get_layer();
         break;
     case MESH_EVENT_LAYER_CHANGE:
@@ -217,7 +172,6 @@ void mesh_event_handler(mesh_event_t event)
                  esp_mesh_is_root() ? "<ROOT>" :
                  (mesh_layer == 2) ? "<layer2>" : "");
         last_layer = mesh_layer;
-        mesh_connected_indicator(mesh_layer);
         break;
     case MESH_EVENT_ROOT_ADDRESS:
         ESP_LOGI(MESH_TAG, "<MESH_EVENT_ROOT_ADDRESS>root address:"MACSTR"",
@@ -298,6 +252,20 @@ void mesh_event_handler(mesh_event_t event)
         break;
     }
 }
+/*******************************************************
+ *                INIT FUNCTIONS
+ *******************************************************/
+
+static esp_err_t led_init()
+{
+    gpio_pad_select_gpio(pin_Y);
+    gpio_pad_select_gpio(pin_R);
+    gpio_pad_select_gpio(pin_G);
+    gpio_set_direction(pin_R, GPIO_MODE_OUTPUT);
+    gpio_set_direction(pin_G, GPIO_MODE_OUTPUT);
+    gpio_set_direction(pin_Y, GPIO_MODE_OUTPUT);
+    return ESP_OK;
+}
 
 static void mesh_init()
 {
@@ -327,21 +295,74 @@ static void mesh_init()
     cfg.router.ssid_len = strlen(CONFIG_MESH_ROUTER_SSID);
     memcpy((uint8_t *) &cfg.router.ssid, CONFIG_MESH_ROUTER_SSID, cfg.router.ssid_len);
     memcpy((uint8_t*) &cfg.router.password, CONFIG_MESH_ROUTER_PASSWD, strlen(CONFIG_MESH_ROUTER_PASSWD));
-    ESP_ERROR_CHECK(esp_mesh_set_authmode(CONFIG_MESH_AP_AUTHMODE));
+    ESP_ERROR_CHECK(esp_mesh_set_ap_authmode(CONFIG_MESH_AP_AUTHMODE));
     cfg.mesh_ap.max_connection = CONFIG_MESH_AP_CONNECTIONS;
     memcpy((uint8_t *) &cfg.mesh_ap.password, CONFIG_MESH_AP_PASSWD, strlen(CONFIG_MESH_AP_PASSWD));
     ESP_ERROR_CHECK(esp_mesh_set_config(&cfg));
     ESP_ERROR_CHECK(esp_mesh_start());
     ESP_LOGI(MESH_TAG, "mesh starts successfully.\n");
-    xTaskCreate(&mesh_led_ctl_task,"mesh_led_respond", 2048, NULL, 5, NULL );
 }
 
-static void mesh_led_ctl_task(void *pvParameters)
+void mesh_rspd_task(mesh_addr_t *addr, int state);
+
+/*******************************************************
+ *                Tasks
+ *******************************************************/
+
+static void mesh_recv_task()
 {
-    
+    // recv data
+    int i;
+    esp_err_t err;
+    mesh_addr_t from;
+    mesh_data_t data;
+    int flag = 0;
+    data.data = rx_buf;
+    data.size = RX_SIZE;
+    is_running = true;
+    while (is_running) {
+        data.size = RX_SIZE;
+        ESP_LOGI(MESH_TAG, "Waiting for input...\n");
+        err = esp_mesh_recv(&from, &data, portMAX_DELAY, &flag, NULL, 0);
+        // ESP_LOGI(MESH_TAG, "TIMEOUT\n");
+        if (err != ESP_OK || !data.size) {
+            ESP_LOGE(MESH_TAG, "err:0x%x, size:%d", err, data.size);
+            continue;
+        }
+        i = data.data[0];
+        ESP_LOGI(MESH_TAG, "Message received! %d\n", i);
+        if (i == 1) {
+            gpio_set_level(pin_R, 1);
+            mesh_rspd_task(&from, 1);
+        } else if (i == 0) {
+            gpio_set_level(pin_R, 0);
+            mesh_rspd_task(&from, 0);
+        }
+    }
+    vTaskDelete(NULL);
 }
 
-void mesh_start(void){
+void mesh_rspd_task(mesh_addr_t *addr, int state)
+{
+    // send data
+    mesh_data_t data;
+    data.data = tx_buf;
+    data.size = sizeof(tx_buf);
+    data.proto = MESH_PROTO_BIN;
+#ifdef MESH_P2P_TOS_OFF
+    data.tos = MESH_TOS_DEF;
+#endif /* MESH_P2P_TOS_OFF */
+    tx_buf[0] = state;
+    ESP_ERROR_CHECK(esp_mesh_send(addr, &data, MESH_DATA_P2P, NULL, 0));
+}
+
+/*******************************************************
+ *                Handler
+ *******************************************************/
+
+
+
+void app_main(void){
     ESP_ERROR_CHECK(led_init());
     ESP_ERROR_CHECK(nvs_flash_init());
     mesh_init();

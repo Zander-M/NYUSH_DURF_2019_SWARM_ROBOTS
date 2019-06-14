@@ -25,9 +25,9 @@
 /*******************************************************
  *                Constants
  *******************************************************/
-#define RX_SIZE (1500)
-#define TX_SIZE (1460)
-#define BUF_SIZE (1024)
+#define RX_SIZE (256)
+#define TX_SIZE (256)
+#define BUF_SIZE (256)
 
 /*******************************************************
  *                Variable Definitions
@@ -333,14 +333,13 @@ static void uart_recv_task()
     uart0_recv_queue = xQueueCreate(10, sizeof(char));
     char msg;
     do {
-        if (xQueueReceive( uart0_recv_queue, &msg, (TickType_t) 10)) {
+        if (xQueueReceive( uart0_recv_queue, &msg, portMAX_DELAY)) {
             if (msg == 1) {
                 printf("Light on\n");
             } else if (msg == 0) {
                 printf("Light off\n");
             }
         }
-        vTaskDelay(10/portTICK_PERIOD_MS);
     } while ( uart0_recv_queue != 0);
 }
 // mesh task
@@ -359,11 +358,12 @@ static void mesh_send_task()
 
     is_running = true;
     while (is_running) {
-        if (xQueueReceive(uart0_send_queue, &msg, (TickType_t) 0)) {
+        ESP_LOGI(MESH_TAG, "Waiting for input...\n");
+        if (xQueueReceive(uart0_send_queue, &msg, portMAX_DELAY)){
             esp_mesh_get_routing_table((mesh_addr_t *) &route_table,
-                                                    CONFIG_MESH_ROUTE_TABLE_SIZE * 6,
-                                                    &route_table_size);
-            ESP_LOGI(MESH_TAG, "Instruction Received: you typed %c\n", msg);
+                                                CONFIG_MESH_ROUTE_TABLE_SIZE * 6,
+                                                &route_table_size);
+            ESP_LOGI(MESH_TAG, "Getting instruction %c\n", msg);
             if (route_table_size <= 1) {
                 ESP_LOGI(MESH_TAG, "No other nodes\n");
             } else {
@@ -372,7 +372,14 @@ static void mesh_send_task()
                 } else if (msg == 's') {
                     tx_buf[0] = 0;
                 }
-                ESP_ERROR_CHECK(esp_mesh_send(&route_table[0], &data, MESH_DATA_P2P, NULL, 0));
+                for (int i = 0; i < route_table_size; i++) {
+                    for (int j = 0; j < 6; j++)
+                        printf("%u.", route_table[i].addr[j]);
+                }
+                    printf("\n");
+                ESP_LOGI(MESH_TAG, "Instruction Received: you typed %c\n", msg);
+                ESP_ERROR_CHECK(esp_mesh_send(&route_table[1], &data, MESH_DATA_P2P, NULL, 0));
+                ESP_LOGI(MESH_TAG, "Message Sent\n");
             } 
             // if (err) {
             //     ESP_LOGE(MESH_TAG, "err:0x%x\n", err);
