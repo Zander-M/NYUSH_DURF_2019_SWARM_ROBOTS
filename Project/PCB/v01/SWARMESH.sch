@@ -12355,7 +12355,8 @@ Rodolfo Cossovich</text>
 <text x="330.2" y="68.58" size="1.778" layer="91">Remember to change transistor footprint</text>
 <text x="172.72" y="5.08" size="1.778" layer="91">
 Licensing: Creative Commons ShareAlike 4.0 International - https://creativecommons.org/licenses/by-sa/4.0/ 
-You are welcome to use this library for commercial purposes. For attribution, we ask that when you reproduce our board, you email us with a link.</text>
+You are welcome to use this library for commercial purposes. For attribution, we ask that when you reproduce our board, you email us with a link.
+Acknowlewdgement: This project has been supported by NYU Shanghai Dean's Undergraduate Research Fund.</text>
 <text x="276.86" y="114.3" size="1.778" layer="91">Remember to review CD4051 footprint &amp; connections</text>
 <text x="311.912" y="72.644" size="1.778" layer="91">Note:
 Select RS &amp; RD to configure IR operation</text>
