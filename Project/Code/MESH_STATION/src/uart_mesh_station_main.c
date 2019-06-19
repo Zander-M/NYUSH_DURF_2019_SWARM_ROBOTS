@@ -25,9 +25,9 @@
 /*******************************************************
  *                Constants
  *******************************************************/
-#define RX_SIZE (256)
-#define TX_SIZE (256)
-#define BUF_SIZE (256)
+#define RX_SIZE (1500)
+#define TX_SIZE (1460)
+#define BUF_SIZE (1024)
 
 /*******************************************************
  *                Variable Definitions
@@ -373,12 +373,12 @@ static void mesh_send_task()
                     tx_buf[0] = 0;
                 }
                 for (int i = 0; i < route_table_size; i++) {
+                    ESP_ERROR_CHECK(esp_mesh_send(&route_table[i], &data, MESH_DATA_P2P, NULL, 0));
                     for (int j = 0; j < 6; j++)
                         printf("%u.", route_table[i].addr[j]);
                 }
                     printf("\n");
                 ESP_LOGI(MESH_TAG, "Instruction Received: you typed %c\n", msg);
-                ESP_ERROR_CHECK(esp_mesh_send(&route_table[1], &data, MESH_DATA_P2P, NULL, 0));
                 ESP_LOGI(MESH_TAG, "Message Sent\n");
             } 
             // if (err) {
@@ -422,10 +422,10 @@ static void mesh_recv_task(void *arg)
 esp_err_t esp_mesh_comm_p2p_start()
 {
     static bool is_comm_p2p_started = false;
-    if (!is_comm_p2p_started) {
+    if (!is_comm_p2p_started) {                                                            
         is_comm_p2p_started = true;
-        xTaskCreate(&mesh_recv_task,"mesh recv task", 2048, NULL, 5, NULL);
-        xTaskCreate(&mesh_send_task,"mesh send task", 2048, NULL, 5, NULL);
+        xTaskCreate(&mesh_recv_task,"mesh recv task", 4096, NULL, 5, NULL);
+        xTaskCreate(&mesh_send_task,"mesh send task", 4096, NULL, 5, NULL);
     }
     return ESP_OK;
 }
