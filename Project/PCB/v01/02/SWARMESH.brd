@@ -167,7 +167,6 @@
 <wire x1="74" y1="75" x2="1" y2="75" width="0" layer="20"/>
 <wire x1="1" y1="75" x2="0" y2="74" width="0" layer="20" curve="90"/>
 <circle x="3.81" y="3.81" radius="1.55" width="0.1524" layer="1"/>
-<circle x="17.78" y="16.51" radius="1.5" width="0.1524" layer="1"/>
 <circle x="71.12" y="71.12" radius="1.55" width="0.1524" layer="1"/>
 <circle x="3.81" y="71.12" radius="1.55" width="0.1524" layer="1"/>
 <circle x="71.12" y="3.81" radius="1.55" width="0.1524" layer="1"/>
