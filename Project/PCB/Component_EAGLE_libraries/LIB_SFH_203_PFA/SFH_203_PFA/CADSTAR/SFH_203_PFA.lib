@@ -1,0 +1,19 @@
+.SFH_203_PFA :1 ;IR T-1 PIN Photodiode 150,SFH203PFA Osram Opto SFH 203 PFA IR Si Photodiode, 75 , Through Hole 5mm package
+SFH213_1
+*STM D
+*NGS
+*PLB 1="K" 2="A"
+*MXP 2
+*DFN SFH_203_PFA
+~!Manufacturer_Name (OSRAM Opto Semiconductors)
+~!Manufacturer_Part_Number (SFH 203 PFA)
+~!Mouser Part Number (720-SFH203PFA)
+~!Link Mouser Price/Stock (https://www.mouser.com/Search/Refine.aspx?Keyword=720-SFH203PFA)
+~!RS Part Number (6548665)
+~!Link RS Price/Stock (https://uk.rs-online.com/web/p/products/6548665)
+~!Allied_Number (70339002)
+~!Link Allied Price/Stock (https://www.alliedelec.com/osram-opto-semiconductors-sfh-203-pfa/70339002/)
+~!Link Datasheet (https://www.osram.com/media/resource/hires/osram-dam-2495938/SFH%20203%20PFA.pdf)
+~!Height (-)
+SFH_203_PFA
+1.1!U 2.1!U 

@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SFH_203_PFA
+D IR T-1 PIN Photodiode 150,SFH203PFA Osram Opto SFH 203 PFA IR Si Photodiode, 75 , Through Hole 5mm package
+K
+F https://www.osram.com/media/resource/hires/osram-dam-2495938/SFH%20203%20PFA.pdf
+$ENDCMP
+#
+#End Doc Library
