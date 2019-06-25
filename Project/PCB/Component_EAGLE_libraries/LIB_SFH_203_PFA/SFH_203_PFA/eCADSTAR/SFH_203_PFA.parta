@@ -1,0 +1,69 @@
+(Japanese_coding: sjis)
+(function "ECS_930085"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-08-24-17:08:02)
+    (utime 2018-08-25-06:30:58)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "SFH_203_PFA")
+)
+
+
+(pinAssign "ECS_930085"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-08-24-17:08:02)
+    (utime 2018-08-25-06:30:58)
+    (interface
+        (port "1" (symbPinId 1) (portName "K") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "A") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_930085")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "SFH_203_PFA")
+)
+
+
+(part "SFH_203_PFA"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-08-24-17:08:02)
+    (utime 2018-08-25-06:30:58)
+    (packageRef "SFH_203_PFA")
+    (pinAssignRef "ECS_930085")
+    (interface
+        (port "1" (symbPinId 1) (portName "K") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "A") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "D")
+    (property "description" "IR T-1 PIN Photodiode 150,SFH203PFA Osram Opto SFH 203 PFA IR Si Photodiode, 75 , Through Hole 5mm package")
+    (property "Manufacturer_Name" "OSRAM Opto Semiconductors")
+    (property "Manufacturer_Part_Number" "SFH 203 PFA")
+    (property "Mouser_Part_Number" "720-SFH203PFA")
+    (property "Mouser_Price/Stock" "https://www.mouser.com/Search/Refine.aspx?Keyword=720-SFH203PFA")
+    (property "RS_Part_Number" "6548665")
+    (property "RS_Price/Stock" "https://uk.rs-online.com/web/p/products/6548665")
+    (property "Allied_Number" "70339002")
+    (property "Allied_Price/Stock" "https://www.alliedelec.com/osram-opto-semiconductors-sfh-203-pfa/70339002/")
+    (property "Datasheet_Link" "https://www.osram.com/media/resource/hires/osram-dam-2495938/SFH%20203%20PFA.pdf")
+)
+
+

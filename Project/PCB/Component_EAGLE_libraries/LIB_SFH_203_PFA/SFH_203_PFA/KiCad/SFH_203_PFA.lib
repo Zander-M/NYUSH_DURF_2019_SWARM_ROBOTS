@@ -1,0 +1,28 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model SFH_203_PFA
+#/930085/151926/2.43/2/4/Diode
+DEF SFH_203_PFA D 0 30 Y Y 1 F N
+F0 "D" 450 200 50 H V L CNN
+F1 "SFH_203_PFA" 450 100 50 H V L CNN
+F2 "SFH213_1" 450 0 50 H I L CNN
+F3 "https://www.osram.com/media/resource/hires/osram-dam-2495938/SFH%20203%20PFA.pdf" 450 -100 50 H I L CNN
+F4 "IR T-1 PIN Photodiode 150,SFH203PFA Osram Opto SFH 203 PFA IR Si Photodiode, 75 , Through Hole 5mm package" 450 -200 50 H I L CNN "Description"
+F5 "" 450 -300 50 H I L CNN "Height"
+F6 "OSRAM Opto Semiconductors" 450 -400 50 H I L CNN "Manufacturer_Name"
+F7 "SFH 203 PFA" 450 -500 50 H I L CNN "Manufacturer_Part_Number"
+F8 "720-SFH203PFA" 450 -600 50 H I L CNN "Mouser Part Number"
+F9 "https://www.mouser.com/Search/Refine.aspx?Keyword=720-SFH203PFA" 450 -700 50 H I L CNN "Mouser Price/Stock"
+F10 "6548665" 450 -800 50 H I L CNN "RS Part Number"
+F11 "https://uk.rs-online.com/web/p/products/6548665" 450 -900 50 H I L CNN "RS Price/Stock"
+F12 "70339002" 450 -1000 50 H I L CNN "Allied_Number"
+F13 "https://www.alliedelec.com/osram-opto-semiconductors-sfh-203-pfa/70339002/" 450 -1100 50 H I L CNN "Allied Price/Stock"
+DRAW
+X ~ 1 0 0 200 R 50 50 0 0 B
+X ~ 2 600 0 200 L 50 50 0 0 B
+P 4 0 1 6 200 0 400 100 400 -100 200 0 N
+P 2 0 1 6 200 100 200 -100 N
+ENDDRAW
+ENDDEF
+#
+#End Library

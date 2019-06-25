@@ -1,0 +1,94 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "SFH_203_PFA"
+   (description "IR T-1 PIN Photodiode 150,SFH203PFA Osram Opto SFH 203 PFA IR Si Photodiode, 75 , Through Hole 5mm package")
+   (family "DIO")
+   (package "SFH213_1")
+   (attribute "Datasheet Link" "https://www.osram.com/media/resource/hires/osram-dam-2495938/SFH%20203%20PFA.pdf")
+   (attribute "Manufacturer_Name" "OSRAM Opto Semiconductors")
+   (attribute "Manufacturer_Part_Number" "SFH 203 PFA")
+   (attribute "Mouser Part Number" "720-SFH203PFA")
+   (attribute "Mouser Price/Stock" "https://www.mouser.com/Search/Refine.aspx?Keyword=720-SFH203PFA")
+   (attribute "RS Part Number" "6548665")
+   (attribute "RS Price/Stock" "https://uk.rs-online.com/web/p/products/6548665")
+   (attribute "Allied_Number" "70339002")
+   (attribute "Allied Price/Stock" "https://www.alliedelec.com/osram-opto-semiconductors-sfh-203-pfa/70339002/")
+   (gate
+    (symbol "SFH_203_PFA")
+    (pin "K" 1 PS)
+    (pin "A" 2 PS)
+   )
+  )
+  (symbol "SFH_203_PFA"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 0) (pt 400 100) (pt 400 -100) (pt 200 0) (closed))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 200 -100))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 600 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "SFH213_1"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (circle
+      (pt 2.95 0) (pt -2.95 0)
+     )
+    )
+   )
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (circle
+      (pt 2.95 0) (pt -2.95 0)
+     )
+    )
+   )
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (circle
+      (pt -3.481 0.007) (pt -3.363 0.007)
+     )
+    )
+   )
+   (leg 1 (pt -1.27 0) (padstack 0))
+   (leg 2 (pt 1.27 0) (padstack 0))
+   (padstack 0
+    (hole 1.2)
+    (plated true)
+    (pad (layer TCOP) (round 1.9))
+    (pad (layer INNER) (round 1.9))
+    (pad (layer BCOP) (round 1.9))
+   )
+  )
+ )
+)

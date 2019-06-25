@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'SFH_203_PFA'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "RS_PART_NUMBER", "RS_PRICE/STOCK", "ALLIED_NUMBER", "ALLIED_PRICE/STOCK", "DESCRIPTION", "DATASHEET";
+{========================================================================================}
+ "OSRAM Opto Semiconductors", "SFH 203 PFA" (!) = "", "SFH213_1", "Other", "720-SFH203PFA", "https://www.mouser.com/Search/Refine.aspx?Keyword=720-SFH203PFA", "6548665", "https://uk.rs-online.com/web/p/products/6548665", "70339002", "https://www.alliedelec.com/osram-opto-semiconductors-sfh-203-pfa/70339002/", "IR T-1 PIN Photodiode 150,SFH203PFA Osram Opto SFH 203 PFA IR Si Photodiode, 75 , Through Hole 5mm package", "https://www.osram.com/media/resource/hires/osram-dam-2495938/SFH%20203%20PFA.pdf"
+END_PART
+
+END.
