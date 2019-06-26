@@ -13083,15 +13083,11 @@ Rodolfo Cossovich
 Licensing: Creative Commons ShareAlike 4.0 International - https://creativecommons.org/licenses/by-sa/4.0/ 
 You are welcome to use this library for commercial purposes. For attribution, we ask that when you reproduce our board, you email us with a link.
 Acknowlewdgement: This project has been supported by NYU Shanghai Dean's Undergraduate Research Fund.</text>
-<text x="332.74" y="187.96" size="1.778" layer="91">Remember to review CD4051 footprint &amp; connections</text>
 <text x="296.672" y="67.564" size="1.778" layer="91">Note:
 Select RS &amp; RD to configure IR operation</text>
 <text x="50.8" y="91.44" size="1.778" layer="91">Note:
 Pads to solder a 1mm
  brass rod as charger</text>
-<text x="289.052" y="39.624" size="1.778" layer="91">Note:
-Touch Sensors could be connected to other sensors</text>
-<text x="99.06" y="132.08" size="1.778" layer="91">check switch</text>
 </plain>
 <instances>
 <instance part="U3" gate="G$1" x="119.38" y="25.4">
