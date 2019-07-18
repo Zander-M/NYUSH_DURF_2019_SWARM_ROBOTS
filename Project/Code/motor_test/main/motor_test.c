@@ -24,13 +24,13 @@
 #include "soc/mcpwm_struct.h"
 
 
-#define L1    16
-#define L2    17
-#define R1    18
-#define R2    19
+#define L1    13
+#define L2    12
+#define R1    14
+#define R2    27
 #define L_SPD 50
 #define R_SPD 50
-int counter[] = {}
+// int counter[] = {};
 
 static void MOTOR_INIT()
 {
@@ -114,14 +114,19 @@ static void motor_test(void *arg)
     while (1) {
         vForward();
         vTaskDelay(2000 / portTICK_RATE_MS);
+        printf("forward\n");
         vBackward();
         vTaskDelay(2000 / portTICK_RATE_MS);
+        printf("backward\n");
         vTurnRight();
         vTaskDelay(2000 / portTICK_RATE_MS);
+        printf("right\n");
         vTurnLeft();
         vTaskDelay(2000 / portTICK_RATE_MS);
+        printf("left\n");
         vStop();
         vTaskDelay(2000 / portTICK_RATE_MS);
+        printf("stop\n");
     }
 }
 
