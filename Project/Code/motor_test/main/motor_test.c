@@ -24,11 +24,12 @@
 #include "soc/mcpwm_struct.h"
 
 
-#define L1 16
-#define L2 17
-#define R1 18
-#define R2 19
-
+#define L1    16
+#define L2    17
+#define R1    18
+#define R2    19
+#define L_SPD 50
+#define R_SPD 50
 int counter[] = {}
 
 static void MOTOR_INIT()
