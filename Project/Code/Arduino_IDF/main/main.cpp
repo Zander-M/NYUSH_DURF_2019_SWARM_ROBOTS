@@ -1,136 +1,102 @@
-#include "Arduino.h"
-#include "FastLED.h"
-
-FASTLED_USING_NAMESPACE
-#define ESP32
-// FastLED "100-lines-of-code" demo reel, showing just a few 
-// of the kinds of animation patterns you can quickly and easily 
-// compose using FastLED.  
-//
-// This example also shows one easy way to define multiple 
-// animations patterns and have them automatically rotate.
-//
-// -Mark Kriegsman, December 2014
-
-#if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
-#warning "Requires FastLED 3.1 or later; check github for latest code."
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
 #endif
 
-#define DATA_PIN    5
-//#define CLK_PIN   4
-#define LED_TYPE    WS2812
-#define COLOR_ORDER GRB
-#define NUM_LEDS    64
-CRGB leds[NUM_LEDS];
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 4
+#endif
 
-#define BRIGHTNESS          96
-#define FRAMES_PER_SECOND  120
 
-void rainbow();
-void rainbowWithGlitter(); 
-void confetti();
-void sinelon();
-void juggle();
-void bpm();
-void nextPattern();
-void addGlitter(fract8 chanceOfGlitter);
+#include "Arduino.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
+// define two tasks for Blink & AnalogRead
+void TaskBlink( void *pvParameters );
+void TaskAnalogReadA3( void *pvParameters );
+
+// the setup function runs once when you press reset or power the board
 void setup() {
-  delay(3000); // 3 second delay for recovery
   
-  // tell FastLED about the LED strip configuration
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  // initialize serial communication at 115200 bits per second:
+  Serial.begin(115200);
+  
+  // Now set up two tasks to run independently.
+  xTaskCreatePinnedToCore(
+    TaskBlink
+    ,  "TaskBlink"   // A name just for humans
+    ,  1024  // This stack size can be checked & adjusted by reading the Stack Highwater
+    ,  NULL
+    ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+    ,  NULL 
+    ,  ARDUINO_RUNNING_CORE);
 
-  // set master brightness control
-  FastLED.setBrightness(BRIGHTNESS);
+  xTaskCreatePinnedToCore(
+    TaskAnalogReadA3
+    ,  "AnalogReadA3"
+    ,  1024  // Stack size
+    ,  NULL
+    ,  1  // Priority
+    ,  NULL 
+    ,  ARDUINO_RUNNING_CORE);
+
+  // Now the task scheduler, which takes over control of scheduling individual tasks, is automatically started.
 }
 
-
-// List of patterns to cycle through.  Each is defined as a separate function below.
-typedef void (*SimplePatternList[])();
-SimplePatternList gPatterns = { rainbow, rainbowWithGlitter, confetti, sinelon, juggle, bpm };
-
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
-uint8_t gHue = 0; // rotating "base color" used by many of the patterns
-  
 void loop()
 {
-  // Call the current pattern function once, updating the 'leds' array
-  gPatterns[gCurrentPatternNumber]();
-
-  // send the 'leds' array out to the actual LED strip
-  FastLED.show();  
-  // insert a delay to keep the framerate modest
-  FastLED.delay(1000/FRAMES_PER_SECOND); 
-
-  // do some periodic updates
-  EVERY_N_MILLISECONDS( 20 ) { gHue++; } // slowly cycle the "base color" through the rainbow
-  EVERY_N_SECONDS( 10 ) { nextPattern(); } // change patterns periodically
+  // Empty. Things are done in Tasks.
 }
 
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+/*--------------------------------------------------*/
+/*---------------------- Tasks ---------------------*/
+/*--------------------------------------------------*/
 
-void nextPattern()
+void TaskBlink(void *pvParameters)  // This is a task.
 {
-  // add one to the current pattern number, and wrap around at the end
-  gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE( gPatterns);
-}
+  (void) pvParameters;
 
-void rainbow() 
-{
-  // FastLED's built-in rainbow generator
-  fill_rainbow( leds, NUM_LEDS, gHue, 7);
-}
+/*
+  Blink
+  Turns on an LED on for one second, then off for one second, repeatedly.
+    
+  If you want to know what pin the on-board LED is connected to on your ESP32 model, check
+  the Technical Specs of your board.
+*/
 
-void rainbowWithGlitter() 
-{
-  // built-in FastLED rainbow, plus some random sparkly glitter
-  rainbow();
-  addGlitter(80);
-}
+  // initialize digital LED_BUILTIN on pin 13 as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
 
-void addGlitter( fract8 chanceOfGlitter) 
-{
-  if( random8() < chanceOfGlitter) {
-    leds[ random16(NUM_LEDS) ] += CRGB::White;
+  for (;;) // A Task shall never return or exit.
+  {
+    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+    vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
+    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+    vTaskDelay(100);  // one tick delay (15ms) in between reads for stability
   }
 }
 
-void confetti() 
+void TaskAnalogReadA3(void *pvParameters)  // This is a task.
 {
-  // random colored speckles that blink in and fade smoothly
-  fadeToBlackBy( leds, NUM_LEDS, 10);
-  int pos = random16(NUM_LEDS);
-  leds[pos] += CHSV( gHue + random8(64), 200, 255);
-}
+  (void) pvParameters;
+  
+/*
+  AnalogReadSerial
+  Reads an analog input on pin A3, prints the result to the serial monitor.
+  Graphical representation is available using serial plotter (Tools > Serial Plotter menu)
+  Attach the center pin of a potentiometer to pin A3, and the outside pins to +5V and ground.
 
-void sinelon()
-{
-  // a colored dot sweeping back and forth, with fading trails
-  fadeToBlackBy( leds, NUM_LEDS, 20);
-  int pos = beatsin16( 13, 0, NUM_LEDS-1 );
-  leds[pos] += CHSV( gHue, 255, 192);
-}
+  This example code is in the public domain.
+*/
 
-void bpm()
-{
-  // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-  uint8_t BeatsPerMinute = 62;
-  CRGBPalette16 palette = PartyColors_p;
-  uint8_t beat = beatsin8( BeatsPerMinute, 64, 255);
-  for( int i = 0; i < NUM_LEDS; i++) { //9948
-    leds[i] = ColorFromPalette(palette, gHue+(i*2), beat-gHue+(i*10));
+  for (;;)
+  {
+    // read the input on analog pin A3:
+    int sensorValueA3 = analogRead(A3);
+    // print out the value you read:
+    Serial.println(sensorValueA3);
+    vTaskDelay(10);  // one tick delay (15ms) in between reads for stability
   }
 }
-
-void juggle() {
-  // eight colored dots, weaving in and out of sync with each other
-  fadeToBlackBy( leds, NUM_LEDS, 20);
-  byte dothue = 0;
-  for( int i = 0; i < 8; i++) {
-    leds[beatsin16( i+7, 0, NUM_LEDS-1 )] |= CHSV(dothue, 200, 255);
-    dothue += 32;
-  }
-}
-
