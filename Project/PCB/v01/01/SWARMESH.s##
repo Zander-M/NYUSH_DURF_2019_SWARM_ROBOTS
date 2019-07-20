@@ -12537,11 +12537,11 @@ Touch Sensors could be connected to other sensors</text>
 <instance part="GND3" gate="1" x="358.14" y="71.12" smashed="yes">
 <attribute name="VALUE" x="355.6" y="68.58" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="GND8" gate="1" x="297.18" y="129.54" smashed="yes">
-<attribute name="VALUE" x="294.64" y="127" size="1.778" layer="96" display="off"/>
+<instance part="GND8" gate="1" x="297.18" y="124.46" smashed="yes">
+<attribute name="VALUE" x="294.64" y="121.92" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="P+5" gate="VCC" x="281.94" y="160.02" smashed="yes">
-<attribute name="VALUE" x="284.48" y="162.56" size="1.778" layer="96" rot="R180"/>
+<instance part="P+5" gate="VCC" x="276.86" y="144.78" smashed="yes">
+<attribute name="VALUE" x="279.4" y="147.32" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="C5" gate="G$1" x="121.92" y="139.7" smashed="yes">
 <attribute name="NAME" x="122.936" y="140.335" size="1.778" layer="95"/>
@@ -12641,9 +12641,9 @@ Touch Sensors could be connected to other sensors</text>
 <instance part="GND4" gate="1" x="180.34" y="93.98" smashed="yes">
 <attribute name="VALUE" x="177.8" y="91.44" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="C1" gate="G$1" x="281.94" y="137.16" smashed="yes">
-<attribute name="NAME" x="282.956" y="137.795" size="1.778" layer="95"/>
-<attribute name="VALUE" x="280.416" y="127.889" size="1.778" layer="96"/>
+<instance part="C1" gate="G$1" x="276.86" y="132.08" smashed="yes">
+<attribute name="NAME" x="277.876" y="132.715" size="1.778" layer="95"/>
+<attribute name="VALUE" x="277.876" y="127.889" size="1.778" layer="96"/>
 </instance>
 <instance part="IR1" gate="G$1" x="127" y="96.52" smashed="yes">
 <attribute name="NAME" x="120.015" y="102.235" size="1.778" layer="95"/>
@@ -12767,11 +12767,11 @@ Touch Sensors could be connected to other sensors</text>
 <pinref part="IC1" gate="P" pin="VEE"/>
 <pinref part="GND8" gate="1" pin="GND"/>
 <pinref part="IC1" gate="P" pin="GND"/>
-<junction x="297.18" y="132.08"/>
+<junction x="297.18" y="127"/>
 <wire x1="297.18" y1="139.7" x2="297.18" y2="144.78" width="0.1524" layer="91"/>
-<wire x1="297.18" y1="132.08" x2="297.18" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="297.18" y1="127" x2="297.18" y2="139.7" width="0.1524" layer="91"/>
 <pinref part="C1" gate="G$1" pin="2"/>
-<wire x1="281.94" y1="132.08" x2="297.18" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="276.86" y1="127" x2="297.18" y2="127" width="0.1524" layer="91"/>
 <junction x="297.18" y="139.7"/>
 </segment>
 <segment>
@@ -12954,10 +12954,10 @@ Touch Sensors could be connected to other sensors</text>
 <segment>
 <pinref part="IC1" gate="P" pin="VCC"/>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
-<wire x1="281.94" y1="157.48" x2="281.94" y2="144.78" width="0.1524" layer="91"/>
+<wire x1="276.86" y1="142.24" x2="276.86" y2="134.62" width="0.1524" layer="91"/>
 <pinref part="C1" gate="G$1" pin="1"/>
-<junction x="281.94" y="144.78"/>
-<wire x1="281.94" y1="144.78" x2="281.94" y2="139.7" width="0.1524" layer="91"/>
+<junction x="276.86" y="139.7"/>
+<wire x1="276.86" y1="134.62" x2="281.94" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+7" gate="VCC" pin="VCC"/>
