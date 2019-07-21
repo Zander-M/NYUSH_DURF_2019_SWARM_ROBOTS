@@ -29,8 +29,7 @@
 #define R1 18
 #define R2 19
 
-#define L_SPD 50.0 // speed in percentage. 100 for full speed 
-#define R_SPD 50.0
+int counter[] = {}
 
 static void MOTOR_INIT()
 {
