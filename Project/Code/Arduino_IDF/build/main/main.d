@@ -126,7 +126,53 @@ main.o: /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/main/main.cpp \
  /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/IPAddress.h \
  /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/HardwareSerial.h \
  /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/Esp.h \
- /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/variants/esp32/pins_arduino.h
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/variants/esp32/pins_arduino.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/FastLED.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/cpp_compat.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/FastLED.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastled_config.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/led_sysdefs.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/led_sysdefs_esp32.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastled_delay.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/bitswap.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/controller.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/pixeltypes.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/math8.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/scale8.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/scale8.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/random8.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/trig8.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/color.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastpin.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastspi_types.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/dmx.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/fastled_esp32.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/fastpin_esp32.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/clockless_rmt_esp32.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/esp32-hal.h \
+ /home/zdrm/esp/esp-idf/components/driver/include/driver/rmt.h \
+ /home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/rmt_reg.h \
+ /home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/dport_reg.h \
+ /home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/dport_access.h \
+ /home/zdrm/esp/esp-idf/components/esp32/include/esp_dport_access.h \
+ /home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/uart_reg.h \
+ /home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/rmt_struct.h \
+ /home/zdrm/esp/esp-idf/components/esp_ringbuf/include/freertos/ringbuf.h \
+ /home/zdrm/esp/esp-idf/components/freertos/include/freertos/queue.h \
+ /home/zdrm/esp/esp-idf/components/driver/include/driver/periph_ctrl.h \
+ /home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/periph_defs.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastled_progmem.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/hsv2rgb.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/colorutils.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/pixelset.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/colorpalettes.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/noise.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/power_mgt.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastspi.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastspi_bitbang.h \
+ /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/chipsets.h
 
 /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/Arduino.h:
 
@@ -383,4 +429,96 @@ main.o: /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/main/main.cpp \
 /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/Esp.h:
 
 /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/variants/esp32/pins_arduino.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/FastLED.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/cpp_compat.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/FastLED.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastled_config.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/led_sysdefs.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/led_sysdefs_esp32.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastled_delay.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/bitswap.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/controller.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/pixeltypes.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/math8.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/scale8.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/scale8.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/random8.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/lib8tion/trig8.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/color.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastpin.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastspi_types.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/dmx.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/fastled_esp32.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/fastpin_esp32.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/platforms/esp/32/clockless_rmt_esp32.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/cores/esp32/esp32-hal.h:
+
+/home/zdrm/esp/esp-idf/components/driver/include/driver/rmt.h:
+
+/home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/rmt_reg.h:
+
+/home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/dport_reg.h:
+
+/home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/dport_access.h:
+
+/home/zdrm/esp/esp-idf/components/esp32/include/esp_dport_access.h:
+
+/home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/uart_reg.h:
+
+/home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/rmt_struct.h:
+
+/home/zdrm/esp/esp-idf/components/esp_ringbuf/include/freertos/ringbuf.h:
+
+/home/zdrm/esp/esp-idf/components/freertos/include/freertos/queue.h:
+
+/home/zdrm/esp/esp-idf/components/driver/include/driver/periph_ctrl.h:
+
+/home/zdrm/esp/esp-idf/components/soc/esp32/include/soc/periph_defs.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastled_progmem.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/hsv2rgb.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/colorutils.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/pixelset.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/colorpalettes.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/noise.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/power_mgt.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastspi.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/fastspi_bitbang.h:
+
+/home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/components/arduino/libraries/FastLED/chipsets.h:
 /home/zdrm/Desktop/DURF/Project/Code/Arduino_IDF/main/./main.cpp:
