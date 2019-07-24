@@ -15097,7 +15097,6 @@ Source: &lt;a href="http://www.farnell.com/datasheets/1482689.pdf"&gt; Datasheet
 <part name="JP4" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="PINHD-1X1" device="-BIGPOGO" package3d_urn="urn:adsk.eagle:package:6240953/1"/>
 <part name="F1" library="RUEF300K-2" deviceset="RUEF300K-2" device="" value="RUEF300K-2"/>
 <part name="JMUX" library="adafruit" deviceset="PINHD-1X10" device=""/>
-<part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="U2" library="CD4051BEE4" deviceset="CD4051BEE4" device=""/>
 <part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="C5" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="C-US" device="025-030X050" package3d_urn="urn:adsk.eagle:package:6240322/1"/>
@@ -15107,6 +15106,7 @@ Source: &lt;a href="http://www.farnell.com/datasheets/1482689.pdf"&gt; Datasheet
 <part name="U4" library="L7805CV-DG" deviceset="L7805CV-DG" device=""/>
 <part name="C2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="C-US" device="025-030X050" package3d_urn="urn:adsk.eagle:package:6240322/1"/>
 <part name="R1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="0207/9" package3d_urn="urn:adsk.eagle:package:6240935/1" value="220"/>
+<part name="GND14" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15421,9 +15421,6 @@ Pads to solder a 1mm
 <attribute name="NAME" x="349.25" y="163.195" size="1.778" layer="95"/>
 <attribute name="VALUE" x="349.25" y="132.08" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="GND9" gate="1" x="264.16" y="132.08">
-<attribute name="VALUE" x="261.62" y="129.54" size="1.778" layer="96" display="off"/>
-</instance>
 <instance part="U2" gate="G$1" x="299.72" y="144.78">
 <attribute name="NAME" x="271.78" y="127" size="1.778" layer="95"/>
 </instance>
@@ -15457,6 +15454,9 @@ Pads to solder a 1mm
 <instance part="R1" gate="G$1" x="312.42" y="93.98" rot="R180">
 <attribute name="NAME" x="313.69" y="97.5614" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="314.452" y="92.456" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="GND14" gate="1" x="264.16" y="127">
+<attribute name="VALUE" x="261.62" y="124.46" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -15591,6 +15591,20 @@ Pads to solder a 1mm
 <pinref part="U4" gate="G$1" pin="GROUND"/>
 <pinref part="GND20" gate="1" pin="GND"/>
 <wire x1="142.24" y1="144.78" x2="142.24" y2="143.51" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U2" gate="G$1" pin="INH"/>
+<wire x1="266.7" y1="139.7" x2="264.16" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="139.7" x2="264.16" y2="137.16" width="0.1524" layer="91"/>
+<pinref part="GND14" gate="1" pin="GND"/>
+<pinref part="U2" gate="G$1" pin="VSS"/>
+<wire x1="264.16" y1="137.16" x2="264.16" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="134.62" x2="264.16" y2="129.54" width="0.1524" layer="91"/>
+<wire x1="266.7" y1="134.62" x2="264.16" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="U2" gate="G$1" pin="VEE"/>
+<wire x1="266.7" y1="137.16" x2="264.16" y2="137.16" width="0.1524" layer="91"/>
+<junction x="264.16" y="137.16"/>
+<junction x="264.16" y="134.62"/>
 </segment>
 </net>
 <net name="M1A" class="0">
@@ -16131,26 +16145,6 @@ Pads to solder a 1mm
 <pinref part="R8" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$12" class="0">
-<segment>
-<pinref part="RB" gate="G$1" pin="1"/>
-<pinref part="Q1" gate="G$1" pin="B"/>
-<wire x1="317.5" y1="81.28" x2="322.58" y2="81.28" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="U2" gate="G$1" pin="VSS"/>
-<pinref part="U2" gate="G$1" pin="VEE"/>
-<wire x1="266.7" y1="137.16" x2="264.16" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="264.16" y1="137.16" x2="264.16" y2="134.62" width="0.1524" layer="91"/>
-<wire x1="266.7" y1="134.62" x2="264.16" y2="134.62" width="0.1524" layer="91"/>
-<junction x="264.16" y="134.62"/>
-<pinref part="GND9" gate="1" pin="GND"/>
-<pinref part="U2" gate="G$1" pin="INH"/>
-<wire x1="266.7" y1="139.7" x2="264.16" y2="139.7" width="0.1524" layer="91"/>
-<wire x1="264.16" y1="139.7" x2="264.16" y2="137.16" width="0.1524" layer="91"/>
-<junction x="264.16" y="137.16"/>
-</segment>
-</net>
 <net name="N$15" class="0">
 <segment>
 <pinref part="CHG2+" gate="G$1" pin="1"/>
@@ -16293,6 +16287,13 @@ Pads to solder a 1mm
 <wire x1="157.48" y1="55.88" x2="157.48" y2="104.14" width="0.1524" layer="91"/>
 <wire x1="157.48" y1="104.14" x2="200.66" y2="104.14" width="0.1524" layer="91"/>
 <label x="165.1" y="104.14" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="RB" gate="G$1" pin="1"/>
+<pinref part="Q1" gate="G$1" pin="B"/>
+<wire x1="317.5" y1="81.28" x2="322.58" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
