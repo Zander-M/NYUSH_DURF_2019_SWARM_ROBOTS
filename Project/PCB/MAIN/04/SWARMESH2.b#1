@@ -211,7 +211,7 @@ is switch footprint correct? I corrected the SCH with wrong connections to GND</
 <text x="16.8275" y="60.325" size="1.27" layer="16" font="vector" ratio="15" rot="MR0">+</text>
 <text x="15.875" y="60.325" size="1.27" layer="1" font="vector" ratio="15">+</text>
 <text x="54.356" y="49.784" size="1.524" layer="1" font="vector" ratio="15">SWARMESH
-2019/07/30
+2019/07/27
 v1.05</text>
 <hole x="3.81" y="3.81" drill="3.1"/>
 <hole x="3.81" y="71.12" drill="3.1"/>
@@ -1550,38 +1550,30 @@ design rules under a new name.</description>
 <wire x1="41.275" y1="8.255" x2="41.2307625" y2="8.2992375" width="0.3048" layer="16"/>
 <wire x1="41.1675" y1="8.255" x2="41.1675" y2="9.5551375" width="0.3048" layer="16"/>
 <wire x1="41.1675" y1="9.5551375" x2="39.4192375" y2="11.3034" width="0.3048" layer="16"/>
+<polygon width="0.1524" layer="1">
+<vertex x="55" y="15"/>
+<vertex x="64" y="15"/>
+<vertex x="65" y="16"/>
+<vertex x="65" y="35"/>
+<vertex x="64" y="36"/>
+<vertex x="55" y="36"/>
+<vertex x="54" y="35"/>
+<vertex x="54" y="16"/>
+</polygon>
+<polygon width="0.1524" layer="1">
+<vertex x="28" y="70"/>
+<vertex x="28" y="60"/>
+<vertex x="29" y="59"/>
+<vertex x="48" y="59"/>
+<vertex x="49" y="60"/>
+<vertex x="49" y="70"/>
+<vertex x="48" y="71"/>
+<vertex x="29" y="71"/>
+</polygon>
 <wire x1="21.2725" y1="53.0225" x2="23.0886" y2="51.2064" width="0.6096" layer="16"/>
 <wire x1="34.7091" y1="43.6753" x2="38.3667" y2="43.6753" width="0.6096" layer="16"/>
 <wire x1="34.7091" y1="43.6753" x2="27.178" y2="51.2064" width="0.6096" layer="16"/>
 <wire x1="23.0886" y1="51.2064" x2="27.178" y2="51.2064" width="0.6096" layer="16"/>
-<polygon width="0.3048" layer="1" spacing="0.0254" isolate="0.3048">
-<vertex x="55.4736" y="36.576"/>
-<vertex x="54.2544" y="35.3568"/>
-<vertex x="54.2544" y="15.8496"/>
-<vertex x="55.4736" y="14.6304"/>
-<vertex x="63.3984" y="14.6304"/>
-<vertex x="65.2272" y="16.4592"/>
-<vertex x="65.2272" y="35.3568"/>
-<vertex x="64.008" y="36.576"/>
-</polygon>
-<polygon width="0.3048" layer="1" spacing="0.0254" isolate="0.3048">
-<vertex x="49.3776" y="66.8528"/>
-<vertex x="49.3776" y="70.7136"/>
-<vertex x="48.1584" y="71.9328"/>
-<vertex x="28.0416" y="71.9328"/>
-<vertex x="27.432" y="71.3232"/>
-<vertex x="27.432" y="67.056"/>
-<vertex x="26.2128" y="65.8368"/>
-<vertex x="15.8496" y="65.8368"/>
-<vertex x="22.5552" y="59.1312"/>
-<vertex x="22.5552" y="57.3024"/>
-<vertex x="23.1648" y="56.6928"/>
-<vertex x="26.2128" y="56.6928"/>
-<vertex x="28.6512" y="59.1312"/>
-<vertex x="47.5488" y="59.1312"/>
-<vertex x="51.816" y="63.3984"/>
-<vertex x="51.816" y="65.2272"/>
-</polygon>
 </signal>
 <signal name="VCC">
 <contactref element="U3" pad="16"/>
